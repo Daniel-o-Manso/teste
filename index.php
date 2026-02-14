@@ -2,53 +2,104 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora PHP</title>
+    <title>Planetário CSS</title>
     <style>
-        body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background: #f4f4f9; }
-        .calc-card { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 300px; }
-        input, select, button { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; }
-        button { background: #007bff; color: white; border: none; cursor: pointer; font-weight: bold; }
-        button:hover { background: #0056b3; }
-        .result { background: #e7f3ff; padding: 10px; border-radius: 6px; text-align: center; font-weight: bold; color: #0056b3; }
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #050505;
+            overflow: hidden;
+            color: white;
+            font-family: sans-serif;
+        }
+
+        .solar-system {
+            position: relative;
+            width: 600px;
+            height: 600px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* O Sol */
+        .sun {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: radial-gradient(circle, #ff0, #f90);
+            border-radius: 50%;
+            box-shadow: 0 0 40px #f90;
+            z-index: 10;
+        }
+
+        /* Órbitas Genéricas */
+        .orbit {
+            position: absolute;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+
+        /* Planetas */
+        .planet {
+            position: absolute;
+            top: 50%;
+            left: -10px; /* Ajuste para centralizar na linha da órbita */
+            border-radius: 50%;
+            transform: translateY(-50%);
+        }
+
+        /* Animação de Rotação */
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Configurações Específicas por Planeta */
+        .mercury-orbit { width: 100px; height: 100px; animation: rotate 3s linear infinite; }
+        .mercury { width: 10px; height: 10px; background: #999; left: 45px; }
+
+        .venus-orbit { width: 160px; height: 160px; animation: rotate 7s linear infinite; }
+        .venus { width: 15px; height: 15px; background: #e3bb76; left: 72px; }
+
+        .earth-orbit { width: 230px; height: 230px; animation: rotate 12s linear infinite; }
+        .earth { width: 16px; height: 16px; background: #2271b3; left: 107px; }
+
+        .mars-orbit { width: 300px; height: 300px; animation: rotate 20s linear infinite; }
+        .mars { width: 12px; height: 12px; background: #e27b58; left: 144px; }
+
+        .jupiter-orbit { width: 420px; height: 420px; animation: rotate 40s linear infinite; }
+        .jupiter { width: 30px; height: 30px; background: #d39c7e; left: 195px; }
     </style>
 </head>
 <body>
 
-<div class="calc-card">
-    <h2>Calculadora PHP</h2>
-    <form method="post">
-        <input type="number" name="n1" step="any" placeholder="Primeiro número" required>
-        <select name="operacao">
-            <option value="soma">+</option>
-            <option value="sub">-</option>
-            <option value="mult">x</option>
-            <option value="div">÷</option>
-        </select>
-        <input type="number" name="n2" step="any" placeholder="Segundo número" required>
-        <button type="submit" name="calcular">Calcular</button>
-    </form>
+    <div class="solar-system">
+        <div class="sun"></div>
 
-    <?php
-    if (isset($_POST['calcular'])) {
-        $n1 = (float)$_POST['n1'];
-        $n2 = (float)$_POST['n2'];
-        $op = $_POST['operacao'];
-        $resultado = 0;
+        <div class="orbit mercury-orbit">
+            <div class="planet mercury"></div>
+        </div>
 
-        switch ($op) {
-            case 'soma': $resultado = $n1 + $n2; break;
-            case 'sub':  $resultado = $n1 - $n2; break;
-            case 'mult': $resultado = $n1 * $n2; break;
-            case 'div': 
-                $resultado = ($n2 != 0) ? $n1 / $n2 : "Erro: Divisão por zero";
-                break;
-        }
+        <div class="orbit venus-orbit">
+            <div class="planet venus"></div>
+        </div>
 
-        echo "<div class='result'>Resultado: $resultado</div>";
-    }
-    ?>
-</div>
+        <div class="orbit earth-orbit">
+            <div class="planet earth"></div>
+        </div>
+
+        <div class="orbit mars-orbit">
+            <div class="planet mars"></div>
+        </div>
+
+        <div class="orbit jupiter-orbit">
+            <div class="planet jupiter"></div>
+        </div>
+    </div>
 
 </body>
 </html>
