@@ -2,104 +2,97 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Planetário CSS</title>
+    <title>Relógio Moderno</title>
     <style>
         body {
-            margin: 0;
+            background: #121212;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: #050505;
-            overflow: hidden;
-            color: white;
-            font-family: sans-serif;
+            margin: 0;
         }
 
-        .solar-system {
-            position: relative;
-            width: 600px;
-            height: 600px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        /* O Sol */
-        .sun {
-            position: absolute;
-            width: 60px;
-            height: 60px;
-            background: radial-gradient(circle, #ff0, #f90);
+        .relogio {
+            width: 300px;
+            height: 300px;
+            border: 8px solid #333;
             border-radius: 50%;
-            box-shadow: 0 0 40px #f90;
+            position: relative;
+            background: #1b1b1b;
+            box-shadow: 0 0 30px rgba(0,0,0,0.5);
+        }
+
+        /* Ponto central */
+        .relogio::after {
+            content: '';
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background: #ff4757;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             z-index: 10;
         }
 
-        /* Órbitas Genéricas */
-        .orbit {
+        .ponteiro {
             position: absolute;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
+            bottom: 50%;
+            left: 50%;
+            transform-origin: bottom;
+            border-radius: 10px;
+            transform: translateX(-50%) rotate(0deg);
         }
 
-        /* Planetas */
-        .planet {
-            position: absolute;
-            top: 50%;
-            left: -10px; /* Ajuste para centralizar na linha da órbita */
-            border-radius: 50%;
-            transform: translateY(-50%);
+        .hora {
+            width: 6px;
+            height: 70px;
+            background: white;
         }
 
-        /* Animação de Rotação */
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+        .minuto {
+            width: 4px;
+            height: 100px;
+            background: #aaa;
         }
 
-        /* Configurações Específicas por Planeta */
-        .mercury-orbit { width: 100px; height: 100px; animation: rotate 3s linear infinite; }
-        .mercury { width: 10px; height: 10px; background: #999; left: 45px; }
-
-        .venus-orbit { width: 160px; height: 160px; animation: rotate 7s linear infinite; }
-        .venus { width: 15px; height: 15px; background: #e3bb76; left: 72px; }
-
-        .earth-orbit { width: 230px; height: 230px; animation: rotate 12s linear infinite; }
-        .earth { width: 16px; height: 16px; background: #2271b3; left: 107px; }
-
-        .mars-orbit { width: 300px; height: 300px; animation: rotate 20s linear infinite; }
-        .mars { width: 12px; height: 12px; background: #e27b58; left: 144px; }
-
-        .jupiter-orbit { width: 420px; height: 420px; animation: rotate 40s linear infinite; }
-        .jupiter { width: 30px; height: 30px; background: #d39c7e; left: 195px; }
+        .segundo {
+            width: 2px;
+            height: 120px;
+            background: #ff4757;
+        }
     </style>
 </head>
 <body>
 
-    <div class="solar-system">
-        <div class="sun"></div>
-
-        <div class="orbit mercury-orbit">
-            <div class="planet mercury"></div>
-        </div>
-
-        <div class="orbit venus-orbit">
-            <div class="planet venus"></div>
-        </div>
-
-        <div class="orbit earth-orbit">
-            <div class="planet earth"></div>
-        </div>
-
-        <div class="orbit mars-orbit">
-            <div class="planet mars"></div>
-        </div>
-
-        <div class="orbit jupiter-orbit">
-            <div class="planet jupiter"></div>
-        </div>
+    <div class="relogio">
+        <div class="ponteiro hora" id="hora"></div>
+        <div class="ponteiro minuto" id="minuto"></div>
+        <div class="ponteiro segundo" id="segundo"></div>
     </div>
 
+    <script>
+        function atualizarRelogio() {
+            const agora = new Date();
+            
+            const s = agora.getSeconds();
+            const m = agora.getMinutes();
+            const h = agora.getHours();
+
+            // Cálculos para converter tempo em graus (360° / unidade)
+            const degS = s * 6; 
+            const degM = m * 6 + (s * 0.1); 
+            const degH = (h % 12) * 30 + (m * 0.5);
+
+            document.getElementById('segundo').style.transform = `translateX(-50%) rotate(${degS}deg)`;
+            document.getElementById('minuto').style.transform = `translateX(-50%) rotate(${degM}deg)`;
+            document.getElementById('hora').style.transform = `translateX(-50%) rotate(${degH}deg)`;
+        }
+
+        setInterval(atualizarRelogio, 1000);
+        atualizarRelogio(); // Chamada inicial
+    </script>
 </body>
 </html>
